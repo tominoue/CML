@@ -1,7 +1,6 @@
-<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>INE-VIRL</name>
+	<name>CMLforVIRL</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -16,16 +15,3 @@
 		<nature>com.cisco.vmmaestro.validation.topologyNature</nature>
 	</natures>
 </projectDescription>
-=======
-<?xml version="1.0" encoding="UTF-8"?>
-<projectDescription>
-	<name>CML</name>
-	<comment></comment>
-	<projects>
-	</projects>
-	<buildSpec>
-	</buildSpec>
-	<natures>
-	</natures>
-</projectDescription>
->>>>>>> origin/master

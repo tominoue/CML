@@ -1,179 +1,385 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<topology xmlns="http://www.cisco.com/VIRL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="0.9" xsi:schemaLocation="http://www.cisco.com/VIRL https://raw.github.com/CiscoVIRL/schema/v0.9/virl.xsd">
+<topology xmlns="http://www.cisco.com/VIRL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="0.95" xsi:schemaLocation="http://www.cisco.com/VIRL https://raw.github.com/CiscoVIRL/schema/v0.95/virl.xsd">
     <extensions>
         <entry key="AutoNetkit.infrastructure_only" type="Boolean">true</entry>
     </extensions>
     <node name="R1" type="SIMPLE" subtype="CSR1000v" location="240,72">
         <extensions>
-            <entry key="config" type="string">! IOS Config generated on 2016-04-21 17:05
-! by autonetkit_0.21.4
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">!
+! Last configuration change at 04:51:31 UTC Tue Dec 19 2017
+!
+version 16.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+platform console serial
 !
 hostname R1
+!
 boot-start-marker
 boot-end-marker
 !
-vrf definition Mgmt-intf
 !
+vrf definition Mgmt-intf
+ !
  address-family ipv4
  exit-address-family
  !
  address-family ipv6
  exit-address-family
 !
-!
-!
-license accept end user agreement
-license boot level premium
-!
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+enable password cisco
 !
 no aaa new-model
 !
 !
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name virl.info
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+! 
+! 
+! 
+! 
+!
 ipv6 unicast-routing
 !
 !
-service timestamps debug datetime msec
-service timestamps log datetime msec
-no service password-encryption
-no service config
-enable password cisco
-enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
-ip classless
-ip subnet-zero
-no ip domain lookup
-ip domain name virl.info
-crypto key generate rsa modulus 768
-ip ssh server algorithm authentication password
-username cisco privilege 15 secret cisco
-line vty 0 4
- transport input ssh telnet
- exec-timeout 720 0
- password cisco
- login local
-line con 0
- password cisco
+multilink bundle-name authenticated
 !
-no cdp run
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-3777155315
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-3777155315
+ revocation-check none
+ rsakeypair TP-self-signed-3777155315
+!
+!
+crypto pki certificate chain TP-self-signed-3777155315
+ certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+!
+!
+!
+!
+!
+!
+!
+!
+!
+license udi pid CSR1000V sn 90ETFTUTLSL
+license accept end user agreement
+license boot level ax
+diagnostic bootup level minimal
+spanning-tree extend system-id
+!
+!
+!
+username cisco privilege 15 secret 5 $1$CopB$FUyW2g82eP6OHXJOIi9IU.
+!
+redundancy
+!
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+! 
 !
 !
 interface Loopback0
-  description Loopback
-  no ip address
+ description Loopback
+ no ip address
 !
 interface GigabitEthernet1
-  description OOB Management
-  vrf forwarding Mgmt-intf
-  ! Configured on launch
-  no ip address
-  no shutdown
+ description OOB Management
+ vrf forwarding Mgmt-intf
+ ip address 10.255.0.175 255.255.0.0
+ negotiation auto
+ no mop enabled
+ no mop sysid
 !
 interface GigabitEthernet2
-  description to Unmanaged_Switch_1
-  no ip address
-  no shutdown
+ description to Unmanaged_Switch_1
+ no ip address
+ negotiation auto
+ no mop enabled
+ no mop sysid
 !
 interface GigabitEthernet3
-  description to R2
-  no ip address
-  no shutdown
+ description to R2
+ no ip address
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+!
+virtual-service csr_mgmt
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+!
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh server algorithm authentication password
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
 !
 !
 !
 !
 !
-end
-</entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+control-plane
+!
+!
+!
+!
+!
+!
+line con 0
+ password cisco
+ stopbits 1
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login local
+ transport input telnet ssh
+!
+!
+!
+!
+!
+!
+end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet2"/>
         <interface id="1" name="GigabitEthernet3"/>
     </node>
     <node name="R2" type="SIMPLE" subtype="CSR1000v" location="240,204">
         <extensions>
-            <entry key="config" type="string">! IOS Config generated on 2016-04-21 17:05
-! by autonetkit_0.21.4
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">!
+! Last configuration change at 04:53:34 UTC Tue Dec 19 2017
+!
+version 16.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+platform console serial
 !
 hostname R2
+!
 boot-start-marker
 boot-end-marker
 !
-vrf definition Mgmt-intf
 !
+vrf definition Mgmt-intf
+ !
  address-family ipv4
  exit-address-family
  !
  address-family ipv6
  exit-address-family
 !
-!
-!
-license accept end user agreement
-license boot level premium
-!
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+enable password cisco
 !
 no aaa new-model
 !
 !
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name virl.info
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+! 
+! 
+! 
+! 
+!
 ipv6 unicast-routing
 !
 !
-service timestamps debug datetime msec
-service timestamps log datetime msec
-no service password-encryption
-no service config
-enable password cisco
-enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
-ip classless
-ip subnet-zero
-no ip domain lookup
-ip domain name virl.info
-crypto key generate rsa modulus 768
-ip ssh server algorithm authentication password
-username cisco privilege 15 secret cisco
-line vty 0 4
- transport input ssh telnet
- exec-timeout 720 0
- password cisco
- login local
-line con 0
- password cisco
+multilink bundle-name authenticated
 !
-no cdp run
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-550189533
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-550189533
+ revocation-check none
+ rsakeypair TP-self-signed-550189533
+!
+!
+crypto pki certificate chain TP-self-signed-550189533
+ certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+!
+!
+!
+!
+!
+!
+!
+!
+!
+license udi pid CSR1000V sn 9QR9QPDKIBQ
+license accept end user agreement
+license boot level ax
+diagnostic bootup level minimal
+spanning-tree extend system-id
+!
+!
+!
+username cisco privilege 15 secret 5 $1$s1y6$gZcazLVb7sBrZDJLWBwVl1
+!
+redundancy
+!
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+! 
 !
 !
 interface Loopback0
-  description Loopback
-  no ip address
+ description Loopback
+ no ip address
 !
 interface GigabitEthernet1
-  description OOB Management
-  vrf forwarding Mgmt-intf
-  ! Configured on launch
-  no ip address
-  no shutdown
+ description OOB Management
+ vrf forwarding Mgmt-intf
+ ip address 10.255.0.186 255.255.0.0
+ negotiation auto
+ no mop enabled
+ no mop sysid
 !
 interface GigabitEthernet2
-  description to Unmanaged_Switch_1
-  no ip address
-  no shutdown
+ description to Unmanaged_Switch_1
+ no ip address
+ negotiation auto
+ no mop enabled
+ no mop sysid
 !
 interface GigabitEthernet3
-  description to R1
-  no ip address
-  no shutdown
+ description to R1
+ no ip address
+ negotiation auto
+ no mop enabled
+ no mop sysid
 !
 interface GigabitEthernet4
-  description to R9
-  no ip address
-  no shutdown
+ description to R9
+ no ip address
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+!
+virtual-service csr_mgmt
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+!
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh server algorithm authentication password
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
 !
 !
 !
 !
 !
-end
-</entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+control-plane
+!
+!
+!
+!
+!
+!
+line con 0
+ password cisco
+ stopbits 1
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login local
+ transport input telnet ssh
+!
+!
+!
+!
+!
+!
+end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet2"/>
         <interface id="1" name="GigabitEthernet3"/>
@@ -181,1466 +387,3280 @@ end
     </node>
     <node name="R3" type="SIMPLE" subtype="CSR1000v" location="240,468">
         <extensions>
-            <entry key="config" type="string">! IOS Config generated on 2016-04-21 17:05
-! by autonetkit_0.21.4
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">!
+! Last configuration change at 04:53:06 UTC Tue Dec 19 2017
+!
+version 16.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+platform console serial
 !
 hostname R3
+!
 boot-start-marker
 boot-end-marker
 !
-vrf definition Mgmt-intf
 !
+vrf definition Mgmt-intf
+ !
  address-family ipv4
  exit-address-family
  !
  address-family ipv6
  exit-address-family
 !
-!
-!
-license accept end user agreement
-license boot level premium
-!
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+enable password cisco
 !
 no aaa new-model
 !
 !
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name virl.info
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+! 
+! 
+! 
+! 
+!
 ipv6 unicast-routing
 !
 !
-service timestamps debug datetime msec
-service timestamps log datetime msec
-no service password-encryption
-no service config
-enable password cisco
-enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
-ip classless
-ip subnet-zero
-no ip domain lookup
-ip domain name virl.info
-crypto key generate rsa modulus 768
-ip ssh server algorithm authentication password
-username cisco privilege 15 secret cisco
-line vty 0 4
- transport input ssh telnet
- exec-timeout 720 0
- password cisco
- login local
-line con 0
- password cisco
+multilink bundle-name authenticated
 !
-no cdp run
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-3970163826
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-3970163826
+ revocation-check none
+ rsakeypair TP-self-signed-3970163826
+!
+!
+crypto pki certificate chain TP-self-signed-3970163826
+ certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+!
+!
+!
+!
+!
+!
+!
+!
+!
+license udi pid CSR1000V sn 92SOV3NWQMQ
+license accept end user agreement
+license boot level ax
+diagnostic bootup level minimal
+spanning-tree extend system-id
+!
+!
+!
+username cisco privilege 15 secret 5 $1$WJZV$O4BgiTmciZYFb2GmCkBUa1
+!
+redundancy
+!
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+! 
 !
 !
 interface Loopback0
-  description Loopback
-  no ip address
+ description Loopback
+ no ip address
 !
 interface GigabitEthernet1
-  description OOB Management
-  vrf forwarding Mgmt-intf
-  ! Configured on launch
-  no ip address
-  no shutdown
+ description OOB Management
+ vrf forwarding Mgmt-intf
+ ip address 10.255.0.188 255.255.0.0
+ negotiation auto
+ no mop enabled
+ no mop sysid
 !
 interface GigabitEthernet2
-  description to Unmanaged_Switch_1
-  no ip address
-  no shutdown
+ description to Unmanaged_Switch_1
+ no ip address
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+!
+virtual-service csr_mgmt
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+!
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh server algorithm authentication password
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
 !
 !
 !
 !
 !
-end
-</entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+control-plane
+!
+!
+!
+!
+!
+!
+line con 0
+ password cisco
+ stopbits 1
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login local
+ transport input telnet ssh
+!
+!
+!
+!
+!
+!
+end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet2"/>
     </node>
     <node name="R4" type="SIMPLE" subtype="CSR1000v" location="312,468">
         <extensions>
-            <entry key="config" type="string">! IOS Config generated on 2016-04-21 17:05
-! by autonetkit_0.21.4
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">!
+! Last configuration change at 04:53:33 UTC Tue Dec 19 2017
+!
+version 16.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+platform console serial
 !
 hostname R4
+!
 boot-start-marker
 boot-end-marker
 !
-vrf definition Mgmt-intf
 !
+vrf definition Mgmt-intf
+ !
  address-family ipv4
  exit-address-family
  !
  address-family ipv6
  exit-address-family
 !
-!
-!
-license accept end user agreement
-license boot level premium
-!
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+enable password cisco
 !
 no aaa new-model
 !
 !
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name virl.info
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+! 
+! 
+! 
+! 
+!
 ipv6 unicast-routing
 !
 !
-service timestamps debug datetime msec
-service timestamps log datetime msec
-no service password-encryption
-no service config
-enable password cisco
-enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
-ip classless
-ip subnet-zero
-no ip domain lookup
-ip domain name virl.info
-crypto key generate rsa modulus 768
-ip ssh server algorithm authentication password
-username cisco privilege 15 secret cisco
-line vty 0 4
- transport input ssh telnet
- exec-timeout 720 0
- password cisco
- login local
-line con 0
- password cisco
+multilink bundle-name authenticated
 !
-no cdp run
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-4288289688
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-4288289688
+ revocation-check none
+ rsakeypair TP-self-signed-4288289688
+!
+!
+crypto pki certificate chain TP-self-signed-4288289688
+ certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+!
+!
+!
+!
+!
+!
+!
+!
+!
+license udi pid CSR1000V sn 9300BZH4J3G
+license accept end user agreement
+license boot level ax
+diagnostic bootup level minimal
+spanning-tree extend system-id
+!
+!
+!
+username cisco privilege 15 secret 5 $1$22OF$P.OUHfkF.X3roTnz8q3Pm0
+!
+redundancy
+!
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+! 
 !
 !
 interface Loopback0
-  description Loopback
-  no ip address
+ description Loopback
+ no ip address
 !
 interface GigabitEthernet1
-  description OOB Management
-  vrf forwarding Mgmt-intf
-  ! Configured on launch
-  no ip address
-  no shutdown
+ description OOB Management
+ vrf forwarding Mgmt-intf
+ ip address 10.255.0.189 255.255.0.0
+ negotiation auto
+ no mop enabled
+ no mop sysid
 !
 interface GigabitEthernet2
-  description to Unmanaged_Switch_1
-  no ip address
-  no shutdown
+ description to Unmanaged_Switch_1
+ no ip address
+ negotiation auto
+ no mop enabled
+ no mop sysid
 !
 interface GigabitEthernet3
-  description to R7
-  no ip address
-  no shutdown
+ description to R7
+ no ip address
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+!
+virtual-service csr_mgmt
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+!
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh server algorithm authentication password
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
 !
 !
 !
 !
 !
-end
-</entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+control-plane
+!
+!
+!
+!
+!
+!
+line con 0
+ password cisco
+ stopbits 1
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login local
+ transport input telnet ssh
+!
+!
+!
+!
+!
+!
+end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet2"/>
         <interface id="1" name="GigabitEthernet3"/>
     </node>
     <node name="R5" type="SIMPLE" subtype="CSR1000v" location="324,72">
         <extensions>
-            <entry key="config" type="string">! IOS Config generated on 2016-04-21 17:05
-! by autonetkit_0.21.4
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">!
+! Last configuration change at 04:53:32 UTC Tue Dec 19 2017
+!
+version 16.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+platform console serial
 !
 hostname R5
+!
 boot-start-marker
 boot-end-marker
 !
-vrf definition Mgmt-intf
 !
+vrf definition Mgmt-intf
+ !
  address-family ipv4
  exit-address-family
  !
  address-family ipv6
  exit-address-family
 !
-!
-!
-license accept end user agreement
-license boot level premium
-!
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+enable password cisco
 !
 no aaa new-model
 !
 !
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name virl.info
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+! 
+! 
+! 
+! 
+!
 ipv6 unicast-routing
 !
 !
-service timestamps debug datetime msec
-service timestamps log datetime msec
-no service password-encryption
-no service config
-enable password cisco
-enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
-ip classless
-ip subnet-zero
-no ip domain lookup
-ip domain name virl.info
-crypto key generate rsa modulus 768
-ip ssh server algorithm authentication password
-username cisco privilege 15 secret cisco
-line vty 0 4
- transport input ssh telnet
- exec-timeout 720 0
- password cisco
- login local
-line con 0
- password cisco
+multilink bundle-name authenticated
 !
-no cdp run
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-3942477031
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-3942477031
+ revocation-check none
+ rsakeypair TP-self-signed-3942477031
+!
+!
+crypto pki certificate chain TP-self-signed-3942477031
+ certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+!
+!
+!
+!
+!
+!
+!
+!
+!
+license udi pid CSR1000V sn 9QC1VOKP1FB
+license accept end user agreement
+license boot level ax
+diagnostic bootup level minimal
+spanning-tree extend system-id
+!
+!
+!
+username cisco privilege 15 secret 5 $1$WCxo$hbuZ8DBc2EFp.saVfsU780
+!
+redundancy
+!
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+! 
 !
 !
 interface Loopback0
-  description Loopback
-  no ip address
+ description Loopback
+ no ip address
 !
 interface GigabitEthernet1
-  description OOB Management
-  vrf forwarding Mgmt-intf
-  ! Configured on launch
-  no ip address
-  no shutdown
+ description OOB Management
+ vrf forwarding Mgmt-intf
+ ip address 10.255.0.190 255.255.0.0
+ negotiation auto
+ no mop enabled
+ no mop sysid
 !
 interface GigabitEthernet2
-  description to Unmanaged_Switch_1
-  no ip address
-  no shutdown
+ description to Unmanaged_Switch_1
+ no ip address
+ negotiation auto
+ no mop enabled
+ no mop sysid
 !
 interface GigabitEthernet3
-  description to R8
-  no ip address
-  no shutdown
+ description to R8
+ no ip address
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+!
+virtual-service csr_mgmt
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+!
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh server algorithm authentication password
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
 !
 !
 !
 !
 !
-end
-</entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+control-plane
+!
+!
+!
+!
+!
+!
+line con 0
+ password cisco
+ stopbits 1
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login local
+ transport input telnet ssh
+!
+!
+!
+!
+!
+!
+end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet2"/>
         <interface id="1" name="GigabitEthernet3"/>
     </node>
     <node name="R6" type="SIMPLE" subtype="CSR1000v" location="492,72">
         <extensions>
-            <entry key="config" type="string">! IOS Config generated on 2016-04-21 17:05
-! by autonetkit_0.21.4
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">!
+! Last configuration change at 04:53:43 UTC Tue Dec 19 2017
+!
+version 16.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+platform console serial
 !
 hostname R6
+!
 boot-start-marker
 boot-end-marker
 !
-vrf definition Mgmt-intf
 !
+vrf definition Mgmt-intf
+ !
  address-family ipv4
  exit-address-family
  !
  address-family ipv6
  exit-address-family
 !
-!
-!
-license accept end user agreement
-license boot level premium
-!
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+enable password cisco
 !
 no aaa new-model
 !
 !
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name virl.info
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+! 
+! 
+! 
+! 
+!
 ipv6 unicast-routing
 !
 !
-service timestamps debug datetime msec
-service timestamps log datetime msec
-no service password-encryption
-no service config
-enable password cisco
-enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
-ip classless
-ip subnet-zero
-no ip domain lookup
-ip domain name virl.info
-crypto key generate rsa modulus 768
-ip ssh server algorithm authentication password
-username cisco privilege 15 secret cisco
-line vty 0 4
- transport input ssh telnet
- exec-timeout 720 0
- password cisco
- login local
-line con 0
- password cisco
+multilink bundle-name authenticated
 !
-no cdp run
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-2944384543
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-2944384543
+ revocation-check none
+ rsakeypair TP-self-signed-2944384543
+!
+!
+crypto pki certificate chain TP-self-signed-2944384543
+ certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+!
+!
+!
+!
+!
+!
+!
+!
+!
+license udi pid CSR1000V sn 9IT6BRKN1TO
+license accept end user agreement
+license boot level ax
+diagnostic bootup level minimal
+spanning-tree extend system-id
+!
+!
+!
+username cisco privilege 15 secret 5 $1$jaZd$BTXCHCk6s8VruijNlswll/
+!
+redundancy
+!
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+! 
 !
 !
 interface Loopback0
-  description Loopback
-  no ip address
+ description Loopback
+ no ip address
 !
 interface GigabitEthernet1
-  description OOB Management
-  vrf forwarding Mgmt-intf
-  ! Configured on launch
-  no ip address
-  no shutdown
+ description OOB Management
+ vrf forwarding Mgmt-intf
+ ip address 10.255.0.191 255.255.0.0
+ negotiation auto
+ no mop enabled
+ no mop sysid
 !
 interface GigabitEthernet2
-  description to Unmanaged_Switch_1
-  no ip address
-  no shutdown
+ description to Unmanaged_Switch_1
+ no ip address
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+!
+virtual-service csr_mgmt
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+!
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh server algorithm authentication password
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
 !
 !
 !
 !
 !
-end
-</entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+control-plane
+!
+!
+!
+!
+!
+!
+line con 0
+ password cisco
+ stopbits 1
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login local
+ transport input telnet ssh
+!
+!
+!
+!
+!
+!
+end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet2"/>
     </node>
     <node name="R7" type="SIMPLE" subtype="CSR1000v" location="396,468">
         <extensions>
-            <entry key="config" type="string">! IOS Config generated on 2016-04-21 17:05
-! by autonetkit_0.21.4
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">!
+! Last configuration change at 04:53:50 UTC Tue Dec 19 2017
+!
+version 16.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+platform console serial
 !
 hostname R7
+!
 boot-start-marker
 boot-end-marker
 !
-vrf definition Mgmt-intf
 !
+vrf definition Mgmt-intf
+ !
  address-family ipv4
  exit-address-family
  !
  address-family ipv6
  exit-address-family
 !
-!
-!
-license accept end user agreement
-license boot level premium
-!
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+enable password cisco
 !
 no aaa new-model
 !
 !
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name virl.info
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+! 
+! 
+! 
+! 
+!
 ipv6 unicast-routing
 !
 !
-service timestamps debug datetime msec
-service timestamps log datetime msec
-no service password-encryption
-no service config
-enable password cisco
-enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
-ip classless
-ip subnet-zero
-no ip domain lookup
-ip domain name virl.info
-crypto key generate rsa modulus 768
-ip ssh server algorithm authentication password
-username cisco privilege 15 secret cisco
-line vty 0 4
- transport input ssh telnet
- exec-timeout 720 0
- password cisco
- login local
-line con 0
- password cisco
+multilink bundle-name authenticated
 !
-no cdp run
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-3738317059
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-3738317059
+ revocation-check none
+ rsakeypair TP-self-signed-3738317059
+!
+!
+crypto pki certificate chain TP-self-signed-3738317059
+ certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+!
+!
+!
+!
+!
+!
+!
+!
+!
+license udi pid CSR1000V sn 9F624QW86KS
+license accept end user agreement
+license boot level ax
+diagnostic bootup level minimal
+spanning-tree extend system-id
+!
+!
+!
+username cisco privilege 15 secret 5 $1$6hPn$yPhFcfjp3sgpyuFhy2fZi1
+!
+redundancy
+!
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+! 
 !
 !
 interface Loopback0
-  description Loopback
-  no ip address
+ description Loopback
+ no ip address
 !
 interface GigabitEthernet1
-  description OOB Management
-  vrf forwarding Mgmt-intf
-  ! Configured on launch
-  no ip address
-  no shutdown
+ description OOB Management
+ vrf forwarding Mgmt-intf
+ ip address 10.255.0.192 255.255.0.0
+ negotiation auto
+ no mop enabled
+ no mop sysid
 !
 interface GigabitEthernet2
-  description to Unmanaged_Switch_1
-  no ip address
-  no shutdown
+ description to Unmanaged_Switch_1
+ no ip address
+ negotiation auto
+ no mop enabled
+ no mop sysid
 !
 interface GigabitEthernet3
-  description to R4
-  no ip address
-  no shutdown
+ description to R4
+ no ip address
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+!
+virtual-service csr_mgmt
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+!
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh server algorithm authentication password
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
 !
 !
 !
 !
 !
-end
-</entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+control-plane
+!
+!
+!
+!
+!
+!
+line con 0
+ password cisco
+ stopbits 1
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login local
+ transport input telnet ssh
+!
+!
+!
+!
+!
+!
+end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet2"/>
         <interface id="1" name="GigabitEthernet3"/>
     </node>
     <node name="R8" type="SIMPLE" subtype="CSR1000v" location="408,72">
         <extensions>
-            <entry key="config" type="string">! IOS Config generated on 2016-04-21 17:05
-! by autonetkit_0.21.4
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">!
+! Last configuration change at 04:53:51 UTC Tue Dec 19 2017
+!
+version 16.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+platform console serial
 !
 hostname R8
+!
 boot-start-marker
 boot-end-marker
 !
-vrf definition Mgmt-intf
 !
+vrf definition Mgmt-intf
+ !
  address-family ipv4
  exit-address-family
  !
  address-family ipv6
  exit-address-family
 !
-!
-!
-license accept end user agreement
-license boot level premium
-!
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+enable password cisco
 !
 no aaa new-model
 !
 !
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name virl.info
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+! 
+! 
+! 
+! 
+!
 ipv6 unicast-routing
 !
 !
-service timestamps debug datetime msec
-service timestamps log datetime msec
-no service password-encryption
-no service config
-enable password cisco
-enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
-ip classless
-ip subnet-zero
-no ip domain lookup
-ip domain name virl.info
-crypto key generate rsa modulus 768
-ip ssh server algorithm authentication password
-username cisco privilege 15 secret cisco
-line vty 0 4
- transport input ssh telnet
- exec-timeout 720 0
- password cisco
- login local
-line con 0
- password cisco
+multilink bundle-name authenticated
 !
-no cdp run
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-3868260447
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-3868260447
+ revocation-check none
+ rsakeypair TP-self-signed-3868260447
+!
+!
+crypto pki certificate chain TP-self-signed-3868260447
+ certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+!
+!
+!
+!
+!
+!
+!
+!
+!
+license udi pid CSR1000V sn 9BQVREO0YFA
+license accept end user agreement
+license boot level ax
+diagnostic bootup level minimal
+spanning-tree extend system-id
+!
+!
+!
+username cisco privilege 15 secret 5 $1$yxzw$7ObvqjIHlkhMBcc2PhBAw/
+!
+redundancy
+!
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+! 
 !
 !
 interface Loopback0
-  description Loopback
-  no ip address
+ description Loopback
+ no ip address
 !
 interface GigabitEthernet1
-  description OOB Management
-  vrf forwarding Mgmt-intf
-  ! Configured on launch
-  no ip address
-  no shutdown
+ description OOB Management
+ vrf forwarding Mgmt-intf
+ ip address 10.255.0.193 255.255.0.0
+ negotiation auto
+ no mop enabled
+ no mop sysid
 !
 interface GigabitEthernet2
-  description to Unmanaged_Switch_1
-  no ip address
-  no shutdown
+ description to Unmanaged_Switch_1
+ no ip address
+ negotiation auto
+ no mop enabled
+ no mop sysid
 !
 interface GigabitEthernet3
-  description to R5
-  no ip address
-  no shutdown
+ description to R5
+ no ip address
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+!
+virtual-service csr_mgmt
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+!
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh server algorithm authentication password
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
 !
 !
 !
 !
 !
-end
-</entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+control-plane
+!
+!
+!
+!
+!
+!
+line con 0
+ password cisco
+ stopbits 1
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login local
+ transport input telnet ssh
+!
+!
+!
+!
+!
+!
+end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet2"/>
         <interface id="1" name="GigabitEthernet3"/>
     </node>
     <node name="R9" type="SIMPLE" subtype="CSR1000v" location="240,336">
         <extensions>
-            <entry key="config" type="string">! IOS Config generated on 2016-04-21 17:05
-! by autonetkit_0.21.4
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">!
+! Last configuration change at 04:54:12 UTC Tue Dec 19 2017
+!
+version 16.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+platform console serial
 !
 hostname R9
+!
 boot-start-marker
 boot-end-marker
 !
-vrf definition Mgmt-intf
 !
+vrf definition Mgmt-intf
+ !
  address-family ipv4
  exit-address-family
  !
  address-family ipv6
  exit-address-family
 !
-!
-!
-license accept end user agreement
-license boot level premium
-!
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+enable password cisco
 !
 no aaa new-model
 !
 !
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name virl.info
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+! 
+! 
+! 
+! 
+!
 ipv6 unicast-routing
 !
 !
-service timestamps debug datetime msec
-service timestamps log datetime msec
-no service password-encryption
-no service config
-enable password cisco
-enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
-ip classless
-ip subnet-zero
-no ip domain lookup
-ip domain name virl.info
-crypto key generate rsa modulus 768
-ip ssh server algorithm authentication password
-username cisco privilege 15 secret cisco
-line vty 0 4
- transport input ssh telnet
- exec-timeout 720 0
- password cisco
- login local
-line con 0
- password cisco
+multilink bundle-name authenticated
 !
-no cdp run
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-495796027
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-495796027
+ revocation-check none
+ rsakeypair TP-self-signed-495796027
+!
+!
+crypto pki certificate chain TP-self-signed-495796027
+ certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+!
+!
+!
+!
+!
+!
+!
+!
+!
+license udi pid CSR1000V sn 99B289OE7B1
+license accept end user agreement
+license boot level ax
+diagnostic bootup level minimal
+spanning-tree extend system-id
+!
+!
+!
+username cisco privilege 15 secret 5 $1$KeG0$BiJxVNHiEksE.WEtVfAuM/
+!
+redundancy
+!
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+! 
 !
 !
 interface Loopback0
-  description Loopback
-  no ip address
+ description Loopback
+ no ip address
 !
 interface GigabitEthernet1
-  description OOB Management
-  vrf forwarding Mgmt-intf
-  ! Configured on launch
-  no ip address
-  no shutdown
+ description OOB Management
+ vrf forwarding Mgmt-intf
+ ip address 10.255.0.194 255.255.0.0
+ negotiation auto
+ no mop enabled
+ no mop sysid
 !
 interface GigabitEthernet2
-  description to Unmanaged_Switch_1
-  no ip address
-  no shutdown
+ description to Unmanaged_Switch_1
+ no ip address
+ negotiation auto
+ no mop enabled
+ no mop sysid
 !
 interface GigabitEthernet3
-  description to R2
-  no ip address
-  no shutdown
+ description to R2
+ no ip address
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+!
+virtual-service csr_mgmt
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+!
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh server algorithm authentication password
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
 !
 !
 !
 !
 !
-end
-</entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+control-plane
+!
+!
+!
+!
+!
+!
+line con 0
+ password cisco
+ stopbits 1
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login local
+ transport input telnet ssh
+!
+!
+!
+!
+!
+!
+end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet2"/>
         <interface id="1" name="GigabitEthernet3"/>
     </node>
     <node name="R10" type="SIMPLE" subtype="CSR1000v" location="576,72">
         <extensions>
-            <entry key="config" type="string">! IOS Config generated on 2016-04-21 17:05
-! by autonetkit_0.21.4
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">!
+! Last configuration change at 04:51:27 UTC Tue Dec 19 2017
+!
+version 16.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+platform console serial
 !
 hostname R10
+!
 boot-start-marker
 boot-end-marker
 !
-vrf definition Mgmt-intf
 !
+vrf definition Mgmt-intf
+ !
  address-family ipv4
  exit-address-family
  !
  address-family ipv6
  exit-address-family
 !
-!
-!
-license accept end user agreement
-license boot level premium
-!
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+enable password cisco
 !
 no aaa new-model
 !
 !
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name virl.info
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+! 
+! 
+! 
+! 
+!
 ipv6 unicast-routing
 !
 !
-service timestamps debug datetime msec
-service timestamps log datetime msec
-no service password-encryption
-no service config
-enable password cisco
-enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
-ip classless
-ip subnet-zero
-no ip domain lookup
-ip domain name virl.info
-crypto key generate rsa modulus 768
-ip ssh server algorithm authentication password
-username cisco privilege 15 secret cisco
-line vty 0 4
- transport input ssh telnet
- exec-timeout 720 0
- password cisco
- login local
-line con 0
- password cisco
+multilink bundle-name authenticated
 !
-no cdp run
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-2901060782
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-2901060782
+ revocation-check none
+ rsakeypair TP-self-signed-2901060782
+!
+!
+crypto pki certificate chain TP-self-signed-2901060782
+ certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+!
+!
+!
+!
+!
+!
+!
+!
+!
+license udi pid CSR1000V sn 9W0MFP66AGW
+license accept end user agreement
+license boot level ax
+diagnostic bootup level minimal
+spanning-tree extend system-id
+!
+!
+!
+username cisco privilege 15 secret 5 $1$jn.Z$qHs.QedyHqey8fdLEoIsS/
+!
+redundancy
+!
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+! 
 !
 !
 interface Loopback0
-  description Loopback
-  no ip address
+ description Loopback
+ no ip address
 !
 interface GigabitEthernet1
-  description OOB Management
-  vrf forwarding Mgmt-intf
-  ! Configured on launch
-  no ip address
-  no shutdown
+ description OOB Management
+ vrf forwarding Mgmt-intf
+ ip address 10.255.0.176 255.255.0.0
+ negotiation auto
+ no mop enabled
+ no mop sysid
 !
 interface GigabitEthernet2
-  description to Unmanaged_Switch_1
-  no ip address
-  no shutdown
+ description to Unmanaged_Switch_1
+ no ip address
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+!
+virtual-service csr_mgmt
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+!
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh server algorithm authentication password
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
 !
 !
 !
 !
 !
-end
-</entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+control-plane
+!
+!
+!
+!
+!
+!
+line con 0
+ password cisco
+ stopbits 1
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login local
+ transport input telnet ssh
+!
+!
+!
+!
+!
+!
+end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet2"/>
     </node>
     <node name="R11" type="SIMPLE" subtype="CSR1000v" location="636,240">
         <extensions>
-            <entry key="config" type="string">! IOS Config generated on 2016-04-21 17:05
-! by autonetkit_0.21.4
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">!
+! Last configuration change at 04:56:08 UTC Tue Dec 19 2017
+!
+version 16.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+platform console serial
 !
 hostname R11
+!
 boot-start-marker
 boot-end-marker
 !
-vrf definition Mgmt-intf
 !
+vrf definition Mgmt-intf
+ !
  address-family ipv4
  exit-address-family
  !
  address-family ipv6
  exit-address-family
 !
-!
-!
-license accept end user agreement
-license boot level premium
-!
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+enable password cisco
 !
 no aaa new-model
 !
 !
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name virl.info
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+! 
+! 
+! 
+! 
+!
 ipv6 unicast-routing
 !
 !
-service timestamps debug datetime msec
-service timestamps log datetime msec
-no service password-encryption
-no service config
-enable password cisco
-enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
-ip classless
-ip subnet-zero
-no ip domain lookup
-ip domain name virl.info
-crypto key generate rsa modulus 768
-ip ssh server algorithm authentication password
-username cisco privilege 15 secret cisco
-line vty 0 4
- transport input ssh telnet
- exec-timeout 720 0
- password cisco
- login local
-line con 0
- password cisco
+multilink bundle-name authenticated
 !
-no cdp run
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-2540040269
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-2540040269
+ revocation-check none
+ rsakeypair TP-self-signed-2540040269
+!
+!
+crypto pki certificate chain TP-self-signed-2540040269
+ certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+!
+!
+!
+!
+!
+!
+!
+!
+!
+license udi pid CSR1000V sn 9SCAYKI922H
+license accept end user agreement
+license boot level ax
+diagnostic bootup level minimal
+spanning-tree extend system-id
+!
+!
+!
+username cisco privilege 15 secret 5 $1$RHS9$UHt7n3tTi.Q4sQA4F5ZQN.
+!
+redundancy
+!
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+! 
 !
 !
 interface Loopback0
-  description Loopback
-  no ip address
+ description Loopback
+ no ip address
 !
 interface GigabitEthernet1
-  description OOB Management
-  vrf forwarding Mgmt-intf
-  ! Configured on launch
-  no ip address
-  no shutdown
+ description OOB Management
+ vrf forwarding Mgmt-intf
+ ip address 10.255.0.177 255.255.0.0
+ negotiation auto
+ no mop enabled
+ no mop sysid
 !
 interface GigabitEthernet2
-  description to Unmanaged_Switch_2
-  no ip address
-  no shutdown
+ description to Unmanaged_Switch_2
+ no ip address
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+!
+virtual-service csr_mgmt
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+!
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh server algorithm authentication password
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
 !
 !
 !
 !
 !
-end
-</entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+control-plane
+!
+!
+!
+!
+!
+!
+line con 0
+ password cisco
+ stopbits 1
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login local
+ transport input telnet ssh
+!
+!
+!
+!
+!
+!
+end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet2"/>
     </node>
     <node name="R12" type="SIMPLE" subtype="CSR1000v" location="696,240">
         <extensions>
-            <entry key="config" type="string">! IOS Config generated on 2016-04-21 17:05
-! by autonetkit_0.21.4
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">!
+! Last configuration change at 04:51:42 UTC Tue Dec 19 2017
+!
+version 16.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+platform console serial
 !
 hostname R12
+!
 boot-start-marker
 boot-end-marker
 !
-vrf definition Mgmt-intf
 !
+vrf definition Mgmt-intf
+ !
  address-family ipv4
  exit-address-family
  !
  address-family ipv6
  exit-address-family
 !
-!
-!
-license accept end user agreement
-license boot level premium
-!
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+enable password cisco
 !
 no aaa new-model
 !
 !
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name virl.info
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+! 
+! 
+! 
+! 
+!
 ipv6 unicast-routing
 !
 !
-service timestamps debug datetime msec
-service timestamps log datetime msec
-no service password-encryption
-no service config
-enable password cisco
-enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
-ip classless
-ip subnet-zero
-no ip domain lookup
-ip domain name virl.info
-crypto key generate rsa modulus 768
-ip ssh server algorithm authentication password
-username cisco privilege 15 secret cisco
-line vty 0 4
- transport input ssh telnet
- exec-timeout 720 0
- password cisco
- login local
-line con 0
- password cisco
+multilink bundle-name authenticated
 !
-no cdp run
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-101489214
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-101489214
+ revocation-check none
+ rsakeypair TP-self-signed-101489214
+!
+!
+crypto pki certificate chain TP-self-signed-101489214
+ certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+!
+!
+!
+!
+!
+!
+!
+!
+!
+license udi pid CSR1000V sn 9XKPK3BSFWJ
+license accept end user agreement
+license boot level ax
+diagnostic bootup level minimal
+spanning-tree extend system-id
+!
+!
+!
+username cisco privilege 15 secret 5 $1$xqt3$d8yFz.2ATDXjioRTiOCdV1
+!
+redundancy
+!
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+! 
 !
 !
 interface Loopback0
-  description Loopback
-  no ip address
+ description Loopback
+ no ip address
 !
 interface GigabitEthernet1
-  description OOB Management
-  vrf forwarding Mgmt-intf
-  ! Configured on launch
-  no ip address
-  no shutdown
+ description OOB Management
+ vrf forwarding Mgmt-intf
+ ip address 10.255.0.178 255.255.0.0
+ negotiation auto
+ no mop enabled
+ no mop sysid
 !
 interface GigabitEthernet2
-  description to Unmanaged_Switch_2
-  no ip address
-  no shutdown
+ description to Unmanaged_Switch_2
+ no ip address
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+!
+virtual-service csr_mgmt
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+!
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh server algorithm authentication password
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
 !
 !
 !
 !
 !
-end
-</entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+control-plane
+!
+!
+!
+!
+!
+!
+line con 0
+ password cisco
+ stopbits 1
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login local
+ transport input telnet ssh
+!
+!
+!
+!
+!
+!
+end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet2"/>
     </node>
     <node name="R13" type="SIMPLE" subtype="CSR1000v" location="768,240">
         <extensions>
-            <entry key="config" type="string">! IOS Config generated on 2016-04-21 17:05
-! by autonetkit_0.21.4
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">!
+! Last configuration change at 04:52:10 UTC Tue Dec 19 2017
+!
+version 16.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+platform console serial
 !
 hostname R13
+!
 boot-start-marker
 boot-end-marker
 !
-vrf definition Mgmt-intf
 !
+vrf definition Mgmt-intf
+ !
  address-family ipv4
  exit-address-family
  !
  address-family ipv6
  exit-address-family
 !
-!
-!
-license accept end user agreement
-license boot level premium
-!
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+enable password cisco
 !
 no aaa new-model
 !
 !
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name virl.info
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+! 
+! 
+! 
+! 
+!
 ipv6 unicast-routing
 !
 !
-service timestamps debug datetime msec
-service timestamps log datetime msec
-no service password-encryption
-no service config
-enable password cisco
-enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
-ip classless
-ip subnet-zero
-no ip domain lookup
-ip domain name virl.info
-crypto key generate rsa modulus 768
-ip ssh server algorithm authentication password
-username cisco privilege 15 secret cisco
-line vty 0 4
- transport input ssh telnet
- exec-timeout 720 0
- password cisco
- login local
-line con 0
- password cisco
+multilink bundle-name authenticated
 !
-no cdp run
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-1705048881
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-1705048881
+ revocation-check none
+ rsakeypair TP-self-signed-1705048881
+!
+!
+crypto pki certificate chain TP-self-signed-1705048881
+ certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+!
+!
+!
+!
+!
+!
+!
+!
+!
+license udi pid CSR1000V sn 9RAVIL61BCY
+license accept end user agreement
+license boot level ax
+diagnostic bootup level minimal
+spanning-tree extend system-id
+!
+!
+!
+username cisco privilege 15 secret 5 $1$Khhp$yDdaNx3Qsm4YPj8RqhmOI/
+!
+redundancy
+!
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+! 
 !
 !
 interface Loopback0
-  description Loopback
-  no ip address
+ description Loopback
+ no ip address
 !
 interface GigabitEthernet1
-  description OOB Management
-  vrf forwarding Mgmt-intf
-  ! Configured on launch
-  no ip address
-  no shutdown
+ description OOB Management
+ vrf forwarding Mgmt-intf
+ ip address 10.255.0.179 255.255.0.0
+ negotiation auto
+ no mop enabled
+ no mop sysid
 !
 interface GigabitEthernet2
-  description to Unmanaged_Switch_2
-  no ip address
-  no shutdown
+ description to Unmanaged_Switch_2
+ no ip address
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+!
+virtual-service csr_mgmt
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+!
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh server algorithm authentication password
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
 !
 !
 !
 !
 !
-end
-</entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+control-plane
+!
+!
+!
+!
+!
+!
+line con 0
+ password cisco
+ stopbits 1
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login local
+ transport input telnet ssh
+!
+!
+!
+!
+!
+!
+end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet2"/>
     </node>
     <node name="R14" type="SIMPLE" subtype="CSR1000v" location="828,240">
         <extensions>
-            <entry key="config" type="string">! IOS Config generated on 2016-04-21 17:05
-! by autonetkit_0.21.4
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">!
+! Last configuration change at 04:52:14 UTC Tue Dec 19 2017
+!
+version 16.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+platform console serial
 !
 hostname R14
+!
 boot-start-marker
 boot-end-marker
 !
-vrf definition Mgmt-intf
 !
+vrf definition Mgmt-intf
+ !
  address-family ipv4
  exit-address-family
  !
  address-family ipv6
  exit-address-family
 !
-!
-!
-license accept end user agreement
-license boot level premium
-!
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+enable password cisco
 !
 no aaa new-model
 !
 !
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name virl.info
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+! 
+! 
+! 
+! 
+!
 ipv6 unicast-routing
 !
 !
-service timestamps debug datetime msec
-service timestamps log datetime msec
-no service password-encryption
-no service config
-enable password cisco
-enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
-ip classless
-ip subnet-zero
-no ip domain lookup
-ip domain name virl.info
-crypto key generate rsa modulus 768
-ip ssh server algorithm authentication password
-username cisco privilege 15 secret cisco
-line vty 0 4
- transport input ssh telnet
- exec-timeout 720 0
- password cisco
- login local
-line con 0
- password cisco
+multilink bundle-name authenticated
 !
-no cdp run
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-527251771
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-527251771
+ revocation-check none
+ rsakeypair TP-self-signed-527251771
+!
+!
+crypto pki certificate chain TP-self-signed-527251771
+ certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+!
+!
+!
+!
+!
+!
+!
+!
+!
+license udi pid CSR1000V sn 99RGO52P3YG
+license accept end user agreement
+license boot level ax
+diagnostic bootup level minimal
+spanning-tree extend system-id
+!
+!
+!
+username cisco privilege 15 secret 5 $1$ZzES$zagg947yFX/W7PfIfB3GQ0
+!
+redundancy
+!
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+! 
 !
 !
 interface Loopback0
-  description Loopback
-  no ip address
+ description Loopback
+ no ip address
 !
 interface GigabitEthernet1
-  description OOB Management
-  vrf forwarding Mgmt-intf
-  ! Configured on launch
-  no ip address
-  no shutdown
+ description OOB Management
+ vrf forwarding Mgmt-intf
+ ip address 10.255.0.180 255.255.0.0
+ negotiation auto
+ no mop enabled
+ no mop sysid
 !
 interface GigabitEthernet2
-  description to Unmanaged_Switch_2
-  no ip address
-  no shutdown
+ description to Unmanaged_Switch_2
+ no ip address
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+!
+virtual-service csr_mgmt
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+!
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh server algorithm authentication password
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
 !
 !
 !
 !
 !
-end
-</entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+control-plane
+!
+!
+!
+!
+!
+!
+line con 0
+ password cisco
+ stopbits 1
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login local
+ transport input telnet ssh
+!
+!
+!
+!
+!
+!
+end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet2"/>
     </node>
     <node name="R15" type="SIMPLE" subtype="CSR1000v" location="888,240">
         <extensions>
-            <entry key="config" type="string">! IOS Config generated on 2016-04-21 17:05
-! by autonetkit_0.21.4
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">!
+! Last configuration change at 04:52:03 UTC Tue Dec 19 2017
+!
+version 16.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+platform console serial
 !
 hostname R15
+!
 boot-start-marker
 boot-end-marker
 !
-vrf definition Mgmt-intf
 !
+vrf definition Mgmt-intf
+ !
  address-family ipv4
  exit-address-family
  !
  address-family ipv6
  exit-address-family
 !
-!
-!
-license accept end user agreement
-license boot level premium
-!
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+enable password cisco
 !
 no aaa new-model
 !
 !
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name virl.info
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+! 
+! 
+! 
+! 
+!
 ipv6 unicast-routing
 !
 !
-service timestamps debug datetime msec
-service timestamps log datetime msec
-no service password-encryption
-no service config
-enable password cisco
-enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
-ip classless
-ip subnet-zero
-no ip domain lookup
-ip domain name virl.info
-crypto key generate rsa modulus 768
-ip ssh server algorithm authentication password
-username cisco privilege 15 secret cisco
-line vty 0 4
- transport input ssh telnet
- exec-timeout 720 0
- password cisco
- login local
-line con 0
- password cisco
+multilink bundle-name authenticated
 !
-no cdp run
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-2442079687
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-2442079687
+ revocation-check none
+ rsakeypair TP-self-signed-2442079687
+!
+!
+crypto pki certificate chain TP-self-signed-2442079687
+ certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+!
+!
+!
+!
+!
+!
+!
+!
+!
+license udi pid CSR1000V sn 9R3RN91FHKA
+license accept end user agreement
+license boot level ax
+diagnostic bootup level minimal
+spanning-tree extend system-id
+!
+!
+!
+username cisco privilege 15 secret 5 $1$if8y$EIs8KSyEhpyXBgudiFpHl/
+!
+redundancy
+!
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+! 
 !
 !
 interface Loopback0
-  description Loopback
-  no ip address
+ description Loopback
+ no ip address
 !
 interface GigabitEthernet1
-  description OOB Management
-  vrf forwarding Mgmt-intf
-  ! Configured on launch
-  no ip address
-  no shutdown
+ description OOB Management
+ vrf forwarding Mgmt-intf
+ ip address 10.255.0.181 255.255.0.0
+ negotiation auto
+ no mop enabled
+ no mop sysid
 !
 interface GigabitEthernet2
-  description to Unmanaged_Switch_2
-  no ip address
-  no shutdown
+ description to Unmanaged_Switch_2
+ no ip address
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+!
+virtual-service csr_mgmt
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+!
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh server algorithm authentication password
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
 !
 !
 !
 !
 !
-end
-</entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+control-plane
+!
+!
+!
+!
+!
+!
+line con 0
+ password cisco
+ stopbits 1
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login local
+ transport input telnet ssh
+!
+!
+!
+!
+!
+!
+end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet2"/>
     </node>
     <node name="R16" type="SIMPLE" subtype="CSR1000v" location="634,400">
         <extensions>
-            <entry key="config" type="string">! IOS Config generated on 2016-04-21 17:05
-! by autonetkit_0.21.4
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">!
+! Last configuration change at 04:52:22 UTC Tue Dec 19 2017
+!
+version 16.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+platform console serial
 !
 hostname R16
+!
 boot-start-marker
 boot-end-marker
 !
-vrf definition Mgmt-intf
 !
+vrf definition Mgmt-intf
+ !
  address-family ipv4
  exit-address-family
  !
  address-family ipv6
  exit-address-family
 !
-!
-!
-license accept end user agreement
-license boot level premium
-!
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+enable password cisco
 !
 no aaa new-model
 !
 !
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name virl.info
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+! 
+! 
+! 
+! 
+!
 ipv6 unicast-routing
 !
 !
-service timestamps debug datetime msec
-service timestamps log datetime msec
-no service password-encryption
-no service config
-enable password cisco
-enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
-ip classless
-ip subnet-zero
-no ip domain lookup
-ip domain name virl.info
-crypto key generate rsa modulus 768
-ip ssh server algorithm authentication password
-username cisco privilege 15 secret cisco
-line vty 0 4
- transport input ssh telnet
- exec-timeout 720 0
- password cisco
- login local
-line con 0
- password cisco
+multilink bundle-name authenticated
 !
-no cdp run
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-643593563
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-643593563
+ revocation-check none
+ rsakeypair TP-self-signed-643593563
+!
+!
+crypto pki certificate chain TP-self-signed-643593563
+ certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+!
+!
+!
+!
+!
+!
+!
+!
+!
+license udi pid CSR1000V sn 9YFXO9AZPO9
+license accept end user agreement
+license boot level ax
+diagnostic bootup level minimal
+spanning-tree extend system-id
+!
+!
+!
+username cisco privilege 15 secret 5 $1$MPj4$BbgHs59d8VlChPfDsCMLA/
+!
+redundancy
+!
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+! 
 !
 !
 interface Loopback0
-  description Loopback
-  no ip address
+ description Loopback
+ no ip address
 !
 interface GigabitEthernet1
-  description OOB Management
-  vrf forwarding Mgmt-intf
-  ! Configured on launch
-  no ip address
-  no shutdown
+ description OOB Management
+ vrf forwarding Mgmt-intf
+ ip address 10.255.0.182 255.255.0.0
+ negotiation auto
+ no mop enabled
+ no mop sysid
 !
 interface GigabitEthernet2
-  description to Unmanaged_Switch_2
-  no ip address
-  no shutdown
+ description to Unmanaged_Switch_2
+ no ip address
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+!
+virtual-service csr_mgmt
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+!
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh server algorithm authentication password
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
 !
 !
 !
 !
 !
-end
-</entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+control-plane
+!
+!
+!
+!
+!
+!
+line con 0
+ password cisco
+ stopbits 1
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login local
+ transport input telnet ssh
+!
+!
+!
+!
+!
+!
+end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet2"/>
     </node>
     <node name="R17" type="SIMPLE" subtype="CSR1000v" location="706,400">
         <extensions>
-            <entry key="config" type="string">! IOS Config generated on 2016-04-21 17:05
-! by autonetkit_0.21.4
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">!
+! Last configuration change at 04:52:30 UTC Tue Dec 19 2017
+!
+version 16.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+platform console serial
 !
 hostname R17
+!
 boot-start-marker
 boot-end-marker
 !
-vrf definition Mgmt-intf
 !
+vrf definition Mgmt-intf
+ !
  address-family ipv4
  exit-address-family
  !
  address-family ipv6
  exit-address-family
 !
-!
-!
-license accept end user agreement
-license boot level premium
-!
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+enable password cisco
 !
 no aaa new-model
 !
 !
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name virl.info
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+! 
+! 
+! 
+! 
+!
 ipv6 unicast-routing
 !
 !
-service timestamps debug datetime msec
-service timestamps log datetime msec
-no service password-encryption
-no service config
-enable password cisco
-enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
-ip classless
-ip subnet-zero
-no ip domain lookup
-ip domain name virl.info
-crypto key generate rsa modulus 768
-ip ssh server algorithm authentication password
-username cisco privilege 15 secret cisco
-line vty 0 4
- transport input ssh telnet
- exec-timeout 720 0
- password cisco
- login local
-line con 0
- password cisco
+multilink bundle-name authenticated
 !
-no cdp run
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-2260535221
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-2260535221
+ revocation-check none
+ rsakeypair TP-self-signed-2260535221
+!
+!
+crypto pki certificate chain TP-self-signed-2260535221
+ certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+!
+!
+!
+!
+!
+!
+!
+!
+!
+license udi pid CSR1000V sn 9A5MEWP1ZP0
+license accept end user agreement
+license boot level ax
+diagnostic bootup level minimal
+spanning-tree extend system-id
+!
+!
+!
+username cisco privilege 15 secret 5 $1$ypm9$RHe79/Yut62ubcheA2LPm.
+!
+redundancy
+!
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+! 
 !
 !
 interface Loopback0
-  description Loopback
-  no ip address
+ description Loopback
+ no ip address
 !
 interface GigabitEthernet1
-  description OOB Management
-  vrf forwarding Mgmt-intf
-  ! Configured on launch
-  no ip address
-  no shutdown
+ description OOB Management
+ vrf forwarding Mgmt-intf
+ ip address 10.255.0.183 255.255.0.0
+ negotiation auto
+ no mop enabled
+ no mop sysid
 !
 interface GigabitEthernet2
-  description to Unmanaged_Switch_2
-  no ip address
-  no shutdown
+ description to Unmanaged_Switch_2
+ no ip address
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+!
+virtual-service csr_mgmt
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+!
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh server algorithm authentication password
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
 !
 !
 !
 !
 !
-end
-</entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+control-plane
+!
+!
+!
+!
+!
+!
+line con 0
+ password cisco
+ stopbits 1
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login local
+ transport input telnet ssh
+!
+!
+!
+!
+!
+!
+end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet2"/>
     </node>
     <node name="R18" type="SIMPLE" subtype="CSR1000v" location="766,400">
         <extensions>
-            <entry key="config" type="string">! IOS Config generated on 2016-04-21 17:05
-! by autonetkit_0.21.4
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">!
+! Last configuration change at 04:52:47 UTC Tue Dec 19 2017
+!
+version 16.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+platform console serial
 !
 hostname R18
+!
 boot-start-marker
 boot-end-marker
 !
-vrf definition Mgmt-intf
 !
+vrf definition Mgmt-intf
+ !
  address-family ipv4
  exit-address-family
  !
  address-family ipv6
  exit-address-family
 !
-!
-!
-license accept end user agreement
-license boot level premium
-!
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+enable password cisco
 !
 no aaa new-model
 !
 !
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name virl.info
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+! 
+! 
+! 
+! 
+!
 ipv6 unicast-routing
 !
 !
-service timestamps debug datetime msec
-service timestamps log datetime msec
-no service password-encryption
-no service config
-enable password cisco
-enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
-ip classless
-ip subnet-zero
-no ip domain lookup
-ip domain name virl.info
-crypto key generate rsa modulus 768
-ip ssh server algorithm authentication password
-username cisco privilege 15 secret cisco
-line vty 0 4
- transport input ssh telnet
- exec-timeout 720 0
- password cisco
- login local
-line con 0
- password cisco
+multilink bundle-name authenticated
 !
-no cdp run
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-2752286736
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-2752286736
+ revocation-check none
+ rsakeypair TP-self-signed-2752286736
+!
+!
+crypto pki certificate chain TP-self-signed-2752286736
+ certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+!
+!
+!
+!
+!
+!
+!
+!
+!
+license udi pid CSR1000V sn 9YR5JRHVEKZ
+license accept end user agreement
+license boot level ax
+diagnostic bootup level minimal
+spanning-tree extend system-id
+!
+!
+!
+username cisco privilege 15 secret 5 $1$9O6.$72Q03vZCQ0acBDr5OX3G51
+!
+redundancy
+!
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+! 
 !
 !
 interface Loopback0
-  description Loopback
-  no ip address
+ description Loopback
+ no ip address
 !
 interface GigabitEthernet1
-  description OOB Management
-  vrf forwarding Mgmt-intf
-  ! Configured on launch
-  no ip address
-  no shutdown
+ description OOB Management
+ vrf forwarding Mgmt-intf
+ ip address 10.255.0.184 255.255.0.0
+ negotiation auto
+ no mop enabled
+ no mop sysid
 !
 interface GigabitEthernet2
-  description to Unmanaged_Switch_2
-  no ip address
-  no shutdown
+ description to Unmanaged_Switch_2
+ no ip address
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+!
+virtual-service csr_mgmt
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+!
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh server algorithm authentication password
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
 !
 !
 !
 !
 !
-end
-</entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+control-plane
+!
+!
+!
+!
+!
+!
+line con 0
+ password cisco
+ stopbits 1
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login local
+ transport input telnet ssh
+!
+!
+!
+!
+!
+!
+end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet2"/>
     </node>
     <node name="R19" type="SIMPLE" subtype="CSR1000v" location="826,400">
         <extensions>
-            <entry key="config" type="string">! IOS Config generated on 2016-04-21 17:05
-! by autonetkit_0.21.4
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">!
+! Last configuration change at 04:52:56 UTC Tue Dec 19 2017
+!
+version 16.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+platform console serial
 !
 hostname R19
+!
 boot-start-marker
 boot-end-marker
 !
-vrf definition Mgmt-intf
 !
+vrf definition Mgmt-intf
+ !
  address-family ipv4
  exit-address-family
  !
  address-family ipv6
  exit-address-family
 !
-!
-!
-license accept end user agreement
-license boot level premium
-!
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+enable password cisco
 !
 no aaa new-model
 !
 !
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name virl.info
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+! 
+! 
+! 
+! 
+!
 ipv6 unicast-routing
 !
 !
-service timestamps debug datetime msec
-service timestamps log datetime msec
-no service password-encryption
-no service config
-enable password cisco
-enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
-ip classless
-ip subnet-zero
-no ip domain lookup
-ip domain name virl.info
-crypto key generate rsa modulus 768
-ip ssh server algorithm authentication password
-username cisco privilege 15 secret cisco
-line vty 0 4
- transport input ssh telnet
- exec-timeout 720 0
- password cisco
- login local
-line con 0
- password cisco
+multilink bundle-name authenticated
 !
-no cdp run
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-1991447689
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-1991447689
+ revocation-check none
+ rsakeypair TP-self-signed-1991447689
+!
+!
+crypto pki certificate chain TP-self-signed-1991447689
+ certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+!
+!
+!
+!
+!
+!
+!
+!
+!
+license udi pid CSR1000V sn 9MEUL3RFV0M
+license accept end user agreement
+license boot level ax
+diagnostic bootup level minimal
+spanning-tree extend system-id
+!
+!
+!
+username cisco privilege 15 secret 5 $1$8elp$WhDf1/ZLQHfH1znHvqMNT/
+!
+redundancy
+!
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+! 
 !
 !
 interface Loopback0
-  description Loopback
-  no ip address
+ description Loopback
+ no ip address
 !
 interface GigabitEthernet1
-  description OOB Management
-  vrf forwarding Mgmt-intf
-  ! Configured on launch
-  no ip address
-  no shutdown
+ description OOB Management
+ vrf forwarding Mgmt-intf
+ ip address 10.255.0.185 255.255.0.0
+ negotiation auto
+ no mop enabled
+ no mop sysid
 !
 interface GigabitEthernet2
-  description to Unmanaged_Switch_2
-  no ip address
-  no shutdown
+ description to Unmanaged_Switch_2
+ no ip address
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+!
+virtual-service csr_mgmt
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+!
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh server algorithm authentication password
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
 !
 !
 !
 !
 !
-end
-</entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+control-plane
+!
+!
+!
+!
+!
+!
+line con 0
+ password cisco
+ stopbits 1
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login local
+ transport input telnet ssh
+!
+!
+!
+!
+!
+!
+end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet2"/>
     </node>
     <node name="R20" type="SIMPLE" subtype="CSR1000v" location="886,400">
         <extensions>
-            <entry key="config" type="string">! IOS Config generated on 2016-04-21 17:05
-! by autonetkit_0.21.4
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">!
+! Last configuration change at 04:53:07 UTC Tue Dec 19 2017
+!
+version 16.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+platform console serial
 !
 hostname R20
+!
 boot-start-marker
 boot-end-marker
 !
-vrf definition Mgmt-intf
 !
+vrf definition Mgmt-intf
+ !
  address-family ipv4
  exit-address-family
  !
  address-family ipv6
  exit-address-family
 !
-!
-!
-license accept end user agreement
-license boot level premium
-!
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+enable password cisco
 !
 no aaa new-model
 !
 !
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name virl.info
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+! 
+! 
+! 
+! 
+!
 ipv6 unicast-routing
 !
 !
-service timestamps debug datetime msec
-service timestamps log datetime msec
-no service password-encryption
-no service config
-enable password cisco
-enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
-ip classless
-ip subnet-zero
-no ip domain lookup
-ip domain name virl.info
-crypto key generate rsa modulus 768
-ip ssh server algorithm authentication password
-username cisco privilege 15 secret cisco
-line vty 0 4
- transport input ssh telnet
- exec-timeout 720 0
- password cisco
- login local
-line con 0
- password cisco
+multilink bundle-name authenticated
 !
-no cdp run
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-1543987978
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-1543987978
+ revocation-check none
+ rsakeypair TP-self-signed-1543987978
+!
+!
+crypto pki certificate chain TP-self-signed-1543987978
+ certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+!
+!
+!
+!
+!
+!
+!
+!
+!
+license udi pid CSR1000V sn 9CX33JMWNST
+license accept end user agreement
+license boot level ax
+diagnostic bootup level minimal
+spanning-tree extend system-id
+!
+!
+!
+username cisco privilege 15 secret 5 $1$jxhx$EPbUXd4md732HrCsJEMYy0
+!
+redundancy
+!
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+! 
 !
 !
 interface Loopback0
-  description Loopback
-  no ip address
+ description Loopback
+ no ip address
 !
 interface GigabitEthernet1
-  description OOB Management
-  vrf forwarding Mgmt-intf
-  ! Configured on launch
-  no ip address
-  no shutdown
+ description OOB Management
+ vrf forwarding Mgmt-intf
+ ip address 10.255.0.187 255.255.0.0
+ negotiation auto
+ no mop enabled
+ no mop sysid
 !
 interface GigabitEthernet2
-  description to Unmanaged_Switch_2
-  no ip address
-  no shutdown
+ description to Unmanaged_Switch_2
+ no ip address
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+!
+virtual-service csr_mgmt
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+!
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh server algorithm authentication password
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
 !
 !
 !
 !
 !
-end
-</entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+control-plane
+!
+!
+!
+!
+!
+!
+line con 0
+ password cisco
+ stopbits 1
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login local
+ transport input telnet ssh
+!
+!
+!
+!
+!
+!
+end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet2"/>
     </node>
-    <node name="XR1" type="SIMPLE" subtype="IOS XRv" location="576,168">
+    <node name="XR1" type="SIMPLE" subtype="IOS XRv" location="577,151">
         <extensions>
-            <entry key="config" type="string">!  IOS-XR Config generated on 2016-04-21 17:05
-! by autonetkit_0.21.4
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">!! IOS XR Configuration 6.1.3
+!! Last configuration change at Tue Dec 19 04:55:49 2017 by CVAC
 !
+!  IOS-XR Config generated on 2016-04-21 17:05
+! by autonetkit_0.21.4
 hostname XR1
 service timestamps log datetime msec
 service timestamps debug datetime msec
 telnet vrf default ipv4 server max-servers 10
 telnet vrf Mgmt-intf ipv4 server max-servers 10
+domain name virl.info
 domain lookup disable
 vrf Mgmt-intf
  address-family ipv4 unicast
@@ -1648,19 +3668,15 @@ vrf Mgmt-intf
  address-family ipv6 unicast
  !
 !
-domain name virl.info
-ssh server v2
-ssh server vrf Mgmt-intf
-!
 line template vty
-timestamp
-exec-timeout 720 0
+ timestamp
+ exec-timeout 720 0
 !
 line console
-exec-timeout 0 0
+ exec-timeout 0 0
 !
 line default
-exec-timeout 720 0
+ exec-timeout 720 0
 !
 vty-pool default 0 50
 control-plane
@@ -1672,47 +3688,42 @@ control-plane
   !
  !
 !
-!
 interface Loopback0
-  description Loopback
-  no ipv4 address
+ description Loopback
+!
+interface MgmtEth0/0/CPU0/0
+ description OOB Management
+ ! Configured on launch
+ vrf Mgmt-intf
+ ipv4 address 10.255.0.195 255.255.0.0
 !
 interface GigabitEthernet0/0/0/0
-  description to Unmanaged_Switch_1
-  no ipv4 address
-  no shutdown
+ description to Unmanaged_Switch_1
 !
 interface GigabitEthernet0/0/0/1
-  description to XR2
-  no ipv4 address
-  no shutdown
+ description to XR2
 !
-interface mgmteth0/0/CPU0/0
-  description OOB Management
-  ! Configured on launch
-  vrf Mgmt-intf
-  no ipv4 address
-  no shutdown
-!
-!
-!
-!
-        </entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+ssh server v2
+ssh server vrf Mgmt-intf
+end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/0/0/0"/>
         <interface id="1" name="GigabitEthernet0/0/0/1"/>
     </node>
-    <node name="XR2" type="SIMPLE" subtype="IOS XRv" location="576,264">
+    <node name="XR2" type="SIMPLE" subtype="IOS XRv" location="533,240">
         <extensions>
-            <entry key="config" type="string">!  IOS-XR Config generated on 2016-04-21 17:05
-! by autonetkit_0.21.4
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">!! IOS XR Configuration 6.1.3
+!! Last configuration change at Tue Dec 19 04:56:15 2017 by CVAC
 !
+!  IOS-XR Config generated on 2016-04-21 17:05
+! by autonetkit_0.21.4
 hostname XR2
 service timestamps log datetime msec
 service timestamps debug datetime msec
 telnet vrf default ipv4 server max-servers 10
 telnet vrf Mgmt-intf ipv4 server max-servers 10
+domain name virl.info
 domain lookup disable
 vrf Mgmt-intf
  address-family ipv4 unicast
@@ -1720,19 +3731,15 @@ vrf Mgmt-intf
  address-family ipv6 unicast
  !
 !
-domain name virl.info
-ssh server v2
-ssh server vrf Mgmt-intf
-!
 line template vty
-timestamp
-exec-timeout 720 0
+ timestamp
+ exec-timeout 720 0
 !
 line console
-exec-timeout 0 0
+ exec-timeout 0 0
 !
 line default
-exec-timeout 720 0
+ exec-timeout 720 0
 !
 vty-pool default 0 50
 control-plane
@@ -1744,47 +3751,42 @@ control-plane
   !
  !
 !
-!
 interface Loopback0
-  description Loopback
-  no ipv4 address
+ description Loopback
+!
+interface MgmtEth0/0/CPU0/0
+ description OOB Management
+ ! Configured on launch
+ vrf Mgmt-intf
+ ipv4 address 10.255.0.196 255.255.0.0
 !
 interface GigabitEthernet0/0/0/0
-  description to Unmanaged_Switch_1
-  no ipv4 address
-  no shutdown
+ description to Unmanaged_Switch_1
 !
 interface GigabitEthernet0/0/0/1
-  description to XR1
-  no ipv4 address
-  no shutdown
+ description to XR1
 !
-interface mgmteth0/0/CPU0/0
-  description OOB Management
-  ! Configured on launch
-  vrf Mgmt-intf
-  no ipv4 address
-  no shutdown
-!
-!
-!
-!
-        </entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+ssh server v2
+ssh server vrf Mgmt-intf
+end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/0/0/0"/>
         <interface id="1" name="GigabitEthernet0/0/0/1"/>
     </node>
     <node name="XR3" type="SIMPLE" subtype="IOS XRv" location="480,468">
         <extensions>
-            <entry key="config" type="string">!  IOS-XR Config generated on 2016-04-21 17:05
-! by autonetkit_0.21.4
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">!! IOS XR Configuration 6.1.3
+!! Last configuration change at Tue Dec 19 04:55:47 2017 by CVAC
 !
+!  IOS-XR Config generated on 2016-04-21 17:05
+! by autonetkit_0.21.4
 hostname XR3
 service timestamps log datetime msec
 service timestamps debug datetime msec
 telnet vrf default ipv4 server max-servers 10
 telnet vrf Mgmt-intf ipv4 server max-servers 10
+domain name virl.info
 domain lookup disable
 vrf Mgmt-intf
  address-family ipv4 unicast
@@ -1792,19 +3794,15 @@ vrf Mgmt-intf
  address-family ipv6 unicast
  !
 !
-domain name virl.info
-ssh server v2
-ssh server vrf Mgmt-intf
-!
 line template vty
-timestamp
-exec-timeout 720 0
+ timestamp
+ exec-timeout 720 0
 !
 line console
-exec-timeout 0 0
+ exec-timeout 0 0
 !
 line default
-exec-timeout 720 0
+ exec-timeout 720 0
 !
 vty-pool default 0 50
 control-plane
@@ -1816,41 +3814,38 @@ control-plane
   !
  !
 !
-!
 interface Loopback0
-  description Loopback
-  no ipv4 address
+ description Loopback
+!
+interface MgmtEth0/0/CPU0/0
+ description OOB Management
+ ! Configured on launch
+ vrf Mgmt-intf
+ ipv4 address 10.255.0.197 255.255.0.0
 !
 interface GigabitEthernet0/0/0/0
-  description to Unmanaged_Switch_1
-  no ipv4 address
-  no shutdown
+ description to Unmanaged_Switch_1
 !
-interface mgmteth0/0/CPU0/0
-  description OOB Management
-  ! Configured on launch
-  vrf Mgmt-intf
-  no ipv4 address
-  no shutdown
-!
-!
-!
-!
-        </entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+ssh server v2
+ssh server vrf Mgmt-intf
+end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/0/0/0"/>
     </node>
     <node name="XR4" type="SIMPLE" subtype="IOS XRv" location="564,468">
         <extensions>
-            <entry key="config" type="string">!  IOS-XR Config generated on 2016-04-21 17:05
-! by autonetkit_0.21.4
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">!! IOS XR Configuration 6.1.3
+!! Last configuration change at Tue Dec 19 04:55:51 2017 by CVAC
 !
+!  IOS-XR Config generated on 2016-04-21 17:05
+! by autonetkit_0.21.4
 hostname XR4
 service timestamps log datetime msec
 service timestamps debug datetime msec
 telnet vrf default ipv4 server max-servers 10
 telnet vrf Mgmt-intf ipv4 server max-servers 10
+domain name virl.info
 domain lookup disable
 vrf Mgmt-intf
  address-family ipv4 unicast
@@ -1858,19 +3853,15 @@ vrf Mgmt-intf
  address-family ipv6 unicast
  !
 !
-domain name virl.info
-ssh server v2
-ssh server vrf Mgmt-intf
-!
 line template vty
-timestamp
-exec-timeout 720 0
+ timestamp
+ exec-timeout 720 0
 !
 line console
-exec-timeout 0 0
+ exec-timeout 0 0
 !
 line default
-exec-timeout 720 0
+ exec-timeout 720 0
 !
 vty-pool default 0 50
 control-plane
@@ -1882,28 +3873,21 @@ control-plane
   !
  !
 !
-!
 interface Loopback0
-  description Loopback
-  no ipv4 address
+ description Loopback
+!
+interface MgmtEth0/0/CPU0/0
+ description OOB Management
+ ! Configured on launch
+ vrf Mgmt-intf
+ ipv4 address 10.255.0.198 255.255.0.0
 !
 interface GigabitEthernet0/0/0/0
-  description to Unmanaged_Switch_1
-  no ipv4 address
-  no shutdown
+ description to Unmanaged_Switch_1
 !
-interface mgmteth0/0/CPU0/0
-  description OOB Management
-  ! Configured on launch
-  vrf Mgmt-intf
-  no ipv4 address
-  no shutdown
-!
-!
-!
-!
-        </entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+ssh server v2
+ssh server vrf Mgmt-intf
+end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/0/0/0"/>
     </node>
@@ -1937,6 +3921,7 @@ interface mgmteth0/0/CPU0/0
         <interface id="13" name="link14"/>
         <interface id="14" name="link15"/>
     </node>
+    <annotations/>
     <connection dst="/virl:topology/virl:node[1]/virl:interface[1]" src="/virl:topology/virl:node[26]/virl:interface[1]"/>
     <connection dst="/virl:topology/virl:node[26]/virl:interface[2]" src="/virl:topology/virl:node[2]/virl:interface[1]"/>
     <connection dst="/virl:topology/virl:node[3]/virl:interface[1]" src="/virl:topology/virl:node[26]/virl:interface[3]"/>

@@ -4,7 +4,7 @@
         <entry key="AutoNetkit.enable_routing" type="Boolean">false</entry>
         <entry key="AutoNetkit.address_family" type="String">None</entry>
     </extensions>
-    <node name="ServiceA" type="SIMPLE" subtype="IOSv" location="141,276">
+    <node name="ServiceA" type="SIMPLE" subtype="IOSv" location="113,217">
         <extensions>
             <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
             <entry key="Auto-generate config" type="Boolean">false</entry>
@@ -186,7 +186,7 @@ end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/1"/>
     </node>
-    <node name="ServiceB" type="SIMPLE" subtype="IOSv" location="222,324">
+    <node name="ServiceB" type="SIMPLE" subtype="IOSv" location="130,304">
         <extensions>
             <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
             <entry key="Auto-generate config" type="Boolean">false</entry>
@@ -369,7 +369,7 @@ end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/1"/>
     </node>
-    <node name="CustomerA1" type="SIMPLE" subtype="IOSv" location="345,359">
+    <node name="CustomerA1" type="SIMPLE" subtype="IOSv" location="305,396">
         <extensions>
             <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
             <entry key="Auto-generate config" type="Boolean">false</entry>
@@ -552,7 +552,7 @@ end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/1"/>
     </node>
-    <node name="CustomerA2" type="SIMPLE" subtype="IOSv" location="439,355">
+    <node name="CustomerA2" type="SIMPLE" subtype="IOSv" location="435,398">
         <extensions>
             <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
             <entry key="Auto-generate config" type="Boolean">false</entry>
@@ -735,7 +735,7 @@ end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/1"/>
     </node>
-    <node name="CustomerB1" type="SIMPLE" subtype="IOSv" location="524,310">
+    <node name="CustomerB1" type="SIMPLE" subtype="IOSv" location="609,302">
         <extensions>
             <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
             <entry key="Auto-generate config" type="Boolean">false</entry>
@@ -918,7 +918,7 @@ end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/1"/>
     </node>
-    <node name="CustomerB2" type="SIMPLE" subtype="IOSv" location="597,253">
+    <node name="CustomerB2" type="SIMPLE" subtype="IOSv" location="639,207">
         <extensions>
             <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
             <entry key="Auto-generate config" type="Boolean">false</entry>
@@ -1106,7 +1106,7 @@ end</entry>
             <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
             <entry key="Auto-generate config" type="Boolean">false</entry>
             <entry key="config" type="String">!
-! Last configuration change at 08:07:40 UTC Thu Dec 21 2017
+! Last configuration change at 03:04:04 UTC Fri Dec 22 2017
 !
 version 15.2
 service timestamps debug datetime msec
@@ -1141,18 +1141,12 @@ vtp mode transparent
 !
 ip vrf VRF-CustomerA
  rd 65001:2
- route-target export 65001:2
- route-target import 65001:2
 !
 ip vrf VRF-CustomerB
  rd 65001:3
- route-target export 65001:3
- route-target import 65001:3
 !
 ip vrf VRF-SERVICE
  rd 65001:1
- route-target export 65001:1
- route-target import 65001:1
 !
 !
 !
@@ -1417,11 +1411,11 @@ end</entry>
         </interface>
         <interface id="6" name="GigabitEthernet1/3"/>
     </node>
-    <node name="FusionRouter" type="SIMPLE" subtype="IOSv" location="380,76">
+    <node name="FusionRouter" type="SIMPLE" subtype="IOSv" location="379,79">
         <extensions>
             <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
             <entry key="config" type="String">!
-! Last configuration change at 07:56:43 UTC Thu Dec 21 2017
+! Last configuration change at 08:24:31 UTC Thu Dec 21 2017
 !
 version 15.6
 service timestamps debug datetime msec
@@ -1465,16 +1459,20 @@ ip vrf VRF-CustomerA
  rd 65000:2
  route-target export 65000:2
  route-target import 65000:2
+ route-target import 65000:1
 !
 ip vrf VRF-CustomerB
  rd 65000:3
  route-target export 65000:3
  route-target import 65000:3
+ route-target import 65000:1
 !
 ip vrf VRF-SERVICE
  rd 65000:1
  route-target export 65000:1
  route-target import 65000:1
+ route-target import 65000:2
+ route-target import 65000:3
 !
 !
 !
@@ -1553,18 +1551,21 @@ router bgp 65001
   bgp router-id 22.22.22.22
   neighbor 172.16.2.1 remote-as 65000
   neighbor 172.16.2.1 activate
+  neighbor 172.16.2.1 as-override
  exit-address-family
  !
  address-family ipv4 vrf VRF-CustomerB
   bgp router-id 33.33.33.33
   neighbor 172.16.3.1 remote-as 65000
   neighbor 172.16.3.1 activate
+  neighbor 172.16.3.1 as-override
  exit-address-family
  !
  address-family ipv4 vrf VRF-SERVICE
   bgp router-id 11.11.11.11
   neighbor 172.16.1.1 remote-as 65000
   neighbor 172.16.1.1 activate
+  neighbor 172.16.1.1 as-override
  exit-address-family
 !
 ip forward-protocol nd
